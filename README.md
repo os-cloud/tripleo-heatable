@@ -46,3 +46,29 @@ environment and heat template options. The output playbooks will be monolythic
 in nature but will remain separated based on the original template context. To
 use these playbooks, the entry point is the `site.yml` however, all generated
 playbook should be executable on their own.
+
+### Generated Playbooks
+
+The provided output directory will contain the set of ansible playbooks
+required to perform a given heat interaction. The generated playbooks are a
+direct translation of the heat templates which means the heatable command is
+not a new deployment method and will not create inventory. The output structure
+will be something similar to this.
+
+``` shell
+ls -1 ~/generated-playbooks
+site.yml
+host-prep.yml
+OS--TripleO--Services--Aide.yml
+OS--TripleO--Services--Pacemaker.yml
+OS--TripleO--Services--Timesync.yml
+...
+```
+
+The `site.yaml` file will contain the order in which all playbooks should be
+executed for a successful deployment.
+
+All instances of `::SoftwareConfig` and `::SoftwareDeployment` will be
+converted into stand-alone shell scripts which are then executed by Ansible on
+a defined "server" using the `script` module. This will ensure expected
+software deployments continue to function as expected.
